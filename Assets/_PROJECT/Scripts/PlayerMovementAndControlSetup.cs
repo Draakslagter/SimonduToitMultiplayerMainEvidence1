@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CharacterController : MonoBehaviour
+public class PlayerMovementAndControlSetup : MonoBehaviour
 {
     private CharacterInput _characterInputMap;
 
