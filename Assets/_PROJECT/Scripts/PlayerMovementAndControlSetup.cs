@@ -1,18 +1,28 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerMovementAndControlSetup : MonoBehaviour
 {
+    [Header ("Control")]
     private CharacterInput _characterInputMap;
-
+    
+    [Header ("Movement")]
     private Rigidbody _characterRb;
     private Vector3 _movementVector;
-    [SerializeField] private float speedMultiplier;
-    [SerializeField] private float jumpMultiplier;
+    [SerializeField] private float speedMultiplier, jumpMultiplier;
+    private int _jumpToken;
+    [SerializeField] private int maxJumpToken;
+    
+    [Header ("Jump")]
+    [SerializeField] private Transform groundCheckTransform;
+    [SerializeField] private float groundCheckRadius;
+    [SerializeField] private LayerMask groundLayer;
 
     private void Awake()
     {
+        _jumpToken = maxJumpToken;
         _characterInputMap = new CharacterInput();
 
         _characterInputMap.Enable();
@@ -78,7 +88,29 @@ public class PlayerMovementAndControlSetup : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        _characterRb.AddForce(Vector3.up * jumpMultiplier, ForceMode.Impulse);
+        var groundArray = Physics.OverlapSphere(groundCheckTransform.position, groundCheckRadius, groundLayer);
+        if (groundArray.Length == 0)
+        {
+            if (_jumpToken == 0)
+            {
+                return;
+            }
+
+            _jumpToken--;
+        }
+        else
+        {
+            _jumpToken = maxJumpToken;
+        }
+
+        
+        var jumpVector = new Vector3(0, jumpMultiplier, 0);
+        _characterRb.AddForce(jumpVector, ForceMode.Impulse);
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(groundCheckTransform.position, groundCheckRadius);
+    }
 }
