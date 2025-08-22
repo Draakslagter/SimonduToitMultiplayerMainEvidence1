@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "CharacterInput",
     "maps": [
         {
@@ -42,7 +43,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack",
+                    "name": "Dash",
                     "type": "Button",
                     "id": "ab0b6e49-bf9d-4fb9-9ad9-8e1a73e179f1",
                     "expectedControlType": "",
@@ -191,7 +192,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard1",
-                    "action": "Attack",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -202,7 +203,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Attack",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

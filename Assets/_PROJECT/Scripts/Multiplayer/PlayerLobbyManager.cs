@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PlayerLobbyManager : MonoBehaviour
 {
-    // private PlayerInputManager playerLobby;
+    private static PlayerLobbyManager _instance;
+    public static PlayerLobbyManager Instance => _instance;
     
     [SerializeField] private List<PlayerInput> listOfJoinedPlayers = new List<PlayerInput>();
     [SerializeField] private GameObject playerNameTextPrefab;
@@ -14,23 +16,20 @@ public class PlayerLobbyManager : MonoBehaviour
     [SerializeField] private VerticalLayoutGroup groupParent;
     
     TMP_Text playerNameText;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
-    {
-        // playerLobby = GetComponent<PlayerInputManager>();
-        // playerLobby.onPlayerJoined += AddPlayerToLobbyList;
-        // playerLobby.onPlayerLeft += RemovePlayerFromLobbyList;
-    }
 
-    public void RemovePlayerFromLobbyList(PlayerInput input)
+    public UnityEvent<bool> triggerWaterMovement;
+    
+    private void Awake()
     {
-        if (listOfJoinedPlayers.Contains(input))
+        if (_instance != null && _instance != this)
         {
-            listOfJoinedPlayers.Remove(input);
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
         }
     }
-
     public void AddPlayerToLobbyList(PlayerInput input)
     {
         Debug.Log("New Player Has Joined");
@@ -38,9 +37,22 @@ public class PlayerLobbyManager : MonoBehaviour
         var temporaryNameText = Instantiate(playerNameTextPrefab, groupParent.transform);
         temporaryNameText.GetComponent<TextPlayerData>().ConnectPlayerToThisText(input);
         temporaryNameText.GetComponent<TMP_Text>().text = GenerateNewPlayerName(input.GetComponent<PlayerData>().playerName);
+        CheckLobbySize();
+    }
+    
+    public void RemovePlayerFromLobbyList(PlayerInput input)
+    {
+        if (listOfJoinedPlayers.Contains(input))
+        {
+            listOfJoinedPlayers.Remove(input);
+        }
+        CheckLobbySize();
     }
 
-   
+    private void CheckLobbySize()
+    {
+        triggerWaterMovement.Invoke(listOfJoinedPlayers.Count > 0);
+    }
     private string GenerateNewPlayerName(string incomingName)
     {
         return $"{incomingName} {listOfJoinedPlayers.Count}";

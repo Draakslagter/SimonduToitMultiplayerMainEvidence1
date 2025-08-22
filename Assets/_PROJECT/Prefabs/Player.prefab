@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 434502191201435284}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -65,7 +65,19 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2805431164464057276}
+        m_TargetAssemblyTypeName: PlayerMovementAndControlSetup, Assembly-CSharp
+        m_MethodName: OnPause
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 2e3f8747-5361-4435-aff9-7894738f4f3b
     m_ActionName: 'PlayerMap/Pause[/Keyboard/escape,/DualSenseGamepadHID/start]'
   - m_PersistentCalls:
@@ -101,11 +113,35 @@ MonoBehaviour:
     m_ActionId: 708bfd3e-9875-4534-932d-87124b9166b5
     m_ActionName: 'PlayerMap/Jump[/Keyboard/space,/DualSenseGamepadHID/buttonSouth]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2805431164464057276}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: cd5661e9-dcf5-4d2f-935b-d48ab51dc9ba
     m_ActionName: 'PlayerMap/Interact[/Keyboard/e,/DualSenseGamepadHID/buttonWest]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2805431164464057276}
+        m_TargetAssemblyTypeName: PlayerMovementAndControlSetup, Assembly-CSharp
+        m_MethodName: OnDash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: ab0b6e49-bf9d-4fb9-9ad9-8e1a73e179f1
     m_ActionName: 'PlayerMap/Attack[/Mouse/leftButton,/DualSenseGamepadHID/rightTrigger]'
   m_NeverAutoSwitchControlSchemes: 0
@@ -230,12 +266,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedMultiplier: 10
   jumpMultiplier: 2
+  dashMultiplier: 10
   maxJumpToken: 2
   groundCheckTransform: {fileID: 251770616760559453}
-  groundCheckRadius: 0.1
+  groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  triggerPauseMenu:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2307112473989190577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87d7c84f602a55d4a8aba8dfa8381506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: Yeet
+  playerName: Bob
   playerHealth: 0
   playerScore: 0
 --- !u!1 &4050318566698636176
@@ -276,7 +316,7 @@ Transform:
   m_GameObject: {fileID: 4050318566698636176}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.05, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -1,15 +1,30 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    private static SceneLoader _instance;
+    public static SceneLoader Instance => _instance;
     [SerializeField] private CanvasGroup transitionCanvasGroup;
     [SerializeField] private float transitionDuration = 0.5f;
-    
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
     private static void SwitchScene(int sceneIndex)
     {
-        SceneManager.LoadScene(sceneIndex);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneIndex);
     }
     public void SwitchWithTransition(int sceneIndex)
     {

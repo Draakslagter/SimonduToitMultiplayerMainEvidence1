@@ -129,7 +129,7 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack"",
+                    ""name"": ""Dash"",
                     ""type"": ""Button"",
                     ""id"": ""ab0b6e49-bf9d-4fb9-9ad9-8e1a73e179f1"",
                     ""expectedControlType"": """",
@@ -278,7 +278,7 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard1"",
-                    ""action"": ""Attack"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -289,7 +289,7 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Attack"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -327,7 +327,7 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
         m_PlayerMap_Movement = m_PlayerMap.FindAction("Movement", throwIfNotFound: true);
         m_PlayerMap_Jump = m_PlayerMap.FindAction("Jump", throwIfNotFound: true);
         m_PlayerMap_Interact = m_PlayerMap.FindAction("Interact", throwIfNotFound: true);
-        m_PlayerMap_Attack = m_PlayerMap.FindAction("Attack", throwIfNotFound: true);
+        m_PlayerMap_Dash = m_PlayerMap.FindAction("Dash", throwIfNotFound: true);
     }
 
     ~@CharacterInput()
@@ -412,7 +412,7 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMap_Movement;
     private readonly InputAction m_PlayerMap_Jump;
     private readonly InputAction m_PlayerMap_Interact;
-    private readonly InputAction m_PlayerMap_Attack;
+    private readonly InputAction m_PlayerMap_Dash;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerMap".
     /// </summary>
@@ -441,9 +441,9 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Interact => m_Wrapper.m_PlayerMap_Interact;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerMap/Attack".
+        /// Provides access to the underlying input action "PlayerMap/Dash".
         /// </summary>
-        public InputAction @Attack => m_Wrapper.m_PlayerMap_Attack;
+        public InputAction @Dash => m_Wrapper.m_PlayerMap_Dash;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -482,9 +482,9 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
-            @Attack.started += instance.OnAttack;
-            @Attack.performed += instance.OnAttack;
-            @Attack.canceled += instance.OnAttack;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
         }
 
         /// <summary>
@@ -508,9 +508,9 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
-            @Attack.started -= instance.OnAttack;
-            @Attack.performed -= instance.OnAttack;
-            @Attack.canceled -= instance.OnAttack;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
         }
 
         /// <summary>
@@ -606,11 +606,11 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteract(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Attack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Dash" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnAttack(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
 }
