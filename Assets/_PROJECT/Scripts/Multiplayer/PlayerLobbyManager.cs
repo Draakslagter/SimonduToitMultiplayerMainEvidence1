@@ -20,7 +20,12 @@ public class PlayerLobbyManager : MonoBehaviour
 
     [SerializeField] private CinemachineTargetGroup cineMachineTargetGroup;
     
+    [SerializeField] private CanvasGroup startGameCanvasGroup;
+    [SerializeField] private CanvasGroup endGameCanvasGroup;
+    
+    
     public UnityEvent<bool> triggerWaterMovement;
+    public UnityEvent<CanvasGroup, bool> triggerMenuChange;
     
     private void Awake()
     {
@@ -57,6 +62,14 @@ public class PlayerLobbyManager : MonoBehaviour
     private void CheckLobbySize()
     {
         triggerWaterMovement.Invoke(listOfJoinedPlayers.Count > 0);
+        if (listOfJoinedPlayers.Count <= 0)
+        {
+            triggerMenuChange.Invoke(endGameCanvasGroup, true);
+        }
+        else
+        {
+            triggerMenuChange.Invoke(startGameCanvasGroup, false);
+        }
     }
     private string GenerateNewPlayerName(string incomingName)
     {
