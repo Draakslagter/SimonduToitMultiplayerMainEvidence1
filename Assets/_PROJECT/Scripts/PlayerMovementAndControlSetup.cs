@@ -23,8 +23,17 @@ public class PlayerMovementAndControlSetup : MonoBehaviour
     [SerializeField] private float groundCheckRadius;
     [SerializeField] private LayerMask groundLayer;
     
+    [Header ("Interaction")]
+    private Transform _characterTransform;
+    private Transform _interactionTransform;
+    private Rigidbody _interactionRb;
+    private bool _holdingObject;
+    
     [Header ("Pause")]
     public UnityEvent triggerPauseMenu;
+    
+    [Header ("Destroy")]
+    public UnityEvent triggerDestroy;
 
     private void Awake()
     {
@@ -38,10 +47,19 @@ public class PlayerMovementAndControlSetup : MonoBehaviour
         {
             _characterRb = GetComponent<Rigidbody>();
         }
+        if (_characterTransform == null)
+        {
+            _characterTransform = transform;
+        }
     }
     private void Start()
     {
         triggerPauseMenu.AddListener(PauseMenu.Instance.PauseGame);
+    }
+
+    private void OnDisable()
+    {
+        triggerDestroy.Invoke();
     }
 
     private void FixedUpdate()
@@ -55,9 +73,25 @@ public class PlayerMovementAndControlSetup : MonoBehaviour
       
     }
 
-    public void OnInteract(InputAction.CallbackContext context)
+    public void OnPickUp(InputAction.CallbackContext context)
     {
-        Debug.Log("We Interacted");
+        Debug.Log("We Picked Up");
+        if (_interactionTransform == null || _holdingObject) return;
+        _interactionTransform.SetParent(_characterTransform);
+        _interactionRb.constraints = RigidbodyConstraints.FreezePosition;
+        _holdingObject = true;
+    }
+
+    public void OnDrop(InputAction.CallbackContext context)
+    {
+        Debug.Log("We Dropped");
+        Debug.Log(_holdingObject);
+        Debug.Log(_interactionTransform);
+        if (_interactionTransform == null || _holdingObject == false) return;
+        _interactionRb.constraints = RigidbodyConstraints.None;
+        _interactionRb.constraints = RigidbodyConstraints.FreezePositionX|RigidbodyConstraints.FreezePositionZ;
+        _interactionTransform.parent = null;
+        _holdingObject = false;
     }
 
     public void OnPause(InputAction.CallbackContext context)
@@ -96,6 +130,22 @@ public class PlayerMovementAndControlSetup : MonoBehaviour
         _characterRb.linearVelocity = new Vector3(0, 1, 0);
         var jumpVector = new Vector3(0, jumpMultiplier, 0);
         _characterRb.AddForce(jumpVector, ForceMode.Impulse);
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (!other.transform.CompareTag("Interactable") || _holdingObject) return;
+        _interactionTransform = other.transform;
+        _interactionRb = _interactionTransform.GetComponent<Rigidbody>();
+        Debug.Log(_interactionTransform);
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.transform.CompareTag("Interactable") && _holdingObject == false)
+        {
+            _interactionTransform = null;
+        }
     }
 
     private void OnDrawGizmos()

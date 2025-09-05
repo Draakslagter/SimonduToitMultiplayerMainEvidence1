@@ -42,6 +42,7 @@ public class PlayerLobbyManager : MonoBehaviour
     
     public void RemovePlayerFromLobbyList(PlayerInput input)
     {
+        Debug.Log("Player has left the lobby");
         if (listOfJoinedPlayers.Contains(input))
         {
             listOfJoinedPlayers.Remove(input);

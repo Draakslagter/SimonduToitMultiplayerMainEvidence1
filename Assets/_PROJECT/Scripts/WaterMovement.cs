@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class WaterMovement : MonoBehaviour
 {
     private bool _gameStart;
     private Rigidbody _waterRb;
-    private float _waterSpeedMultiplier;
+    [SerializeField] private float _waterSpeedMultiplier;
     
     private void Awake()
     {
@@ -27,5 +28,13 @@ public class WaterMovement : MonoBehaviour
         if (_gameStart == false) return;
         Debug.Log("Moving Water");
         _waterRb.transform.Translate(Vector3.up * (_waterSpeedMultiplier * Time.fixedDeltaTime));
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Destroy(other.gameObject);
+        }
     }
 }

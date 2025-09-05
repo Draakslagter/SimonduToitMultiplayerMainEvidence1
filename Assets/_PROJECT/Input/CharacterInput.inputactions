@@ -34,9 +34,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interact",
+                    "name": "Pick Up",
                     "type": "Button",
                     "id": "cd5661e9-dcf5-4d2f-935b-d48ab51dc9ba",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Drop",
+                    "type": "Button",
+                    "id": "84dbef0f-aedc-423a-93eb-72aae3edb225",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -170,7 +179,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard1",
-                    "action": "Interact",
+                    "action": "Pick Up",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -181,7 +190,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Interact",
+                    "action": "Pick Up",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -204,6 +213,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e8af414-0acc-46fa-8057-32957fa65498",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a06caeea-b0c6-4c0a-b45c-3f23390b37a5",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
