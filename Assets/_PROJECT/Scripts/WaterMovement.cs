@@ -26,7 +26,6 @@ public class WaterMovement : MonoBehaviour
     private void FixedUpdate()
     {
         if (_gameStart == false) return;
-        Debug.Log("Moving Water");
         _waterRb.transform.Translate(Vector3.up * (_waterSpeedMultiplier * Time.fixedDeltaTime));
     }
 

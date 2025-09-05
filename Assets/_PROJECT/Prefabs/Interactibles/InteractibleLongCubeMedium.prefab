@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5098528410534042599}
   - component: {fileID: 5899735283944230824}
   - component: {fileID: 5060567918493435382}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: InteractibleLongCubeMedium
-  m_TagString: Interactable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
