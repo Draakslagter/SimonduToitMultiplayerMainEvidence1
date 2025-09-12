@@ -52,6 +52,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Create",
+                    "type": "Button",
+                    "id": "1d5c114d-9fd7-43a5-87fe-cb858a1071d5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Dash",
                     "type": "Button",
                     "id": "ab0b6e49-bf9d-4fb9-9ad9-8e1a73e179f1",
@@ -235,6 +244,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Drop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1938fa5c-d6d9-4dfb-93e4-48ed7bdab7e3",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Create",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "264810e8-afcf-45fb-b6bf-fef35fb1b4df",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Create",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

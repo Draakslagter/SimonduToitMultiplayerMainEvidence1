@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6737034779284610217}
   - component: {fileID: 2805431164464057276}
   - component: {fileID: 2307112473989190577}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -161,6 +161,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 84dbef0f-aedc-423a-93eb-72aae3edb225
     m_ActionName: 'PlayerMap/Drop[/Keyboard/f,/DualSenseGamepadHID/buttonEast]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2805431164464057276}
+        m_TargetAssemblyTypeName: PlayerMovementAndControlSetup, Assembly-CSharp
+        m_MethodName: OnCreate
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1d5c114d-9fd7-43a5-87fe-cb858a1071d5
+    m_ActionName: 'PlayerMap/Create[/DualSenseGamepadHID/buttonNorth,/Keyboard/r]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMap
@@ -292,13 +308,14 @@ MonoBehaviour:
     m_Bits: 8
   pickUpTransform: {fileID: 6818633751556314925}
   pickUpRadius: 0.2
-  interactableLayer:
-    serializedVersion: 2
-    m_Bits: 64
+  interactionTransform: {fileID: 0}
+  interactionRb: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
-    m_Bits: 128
-  playerLayerMaskValue: 7
+    m_Bits: 64
+  triggerSpawnItem:
+    m_PersistentCalls:
+      m_Calls: []
   triggerPauseMenu:
     m_PersistentCalls:
       m_Calls: []
@@ -329,7 +346,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6818633751556314925}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: PickupCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +377,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 251770616760559453}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}

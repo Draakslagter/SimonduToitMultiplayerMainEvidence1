@@ -2,11 +2,16 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerMovementAndControlSetup : MonoBehaviour
 {
-    
+    private static readonly int Color1 = Shader.PropertyToID("_BaseColor");
+
+    [Header ("Visuals")]
+    private Renderer _playerRenderer;
         
     [Header ("Control")]
     private CharacterInput _characterInputMap;
@@ -25,14 +30,17 @@ public class PlayerMovementAndControlSetup : MonoBehaviour
     
     [Header ("Interaction")]
     private Transform _playerTransform;
-    [SerializeField] private Transform pickUpTransform;
+    public Transform pickUpTransform;
     [SerializeField] private float pickUpRadius;
     
-    private Transform _interactionTransform;
-    private Rigidbody _interactionRb;
+    public Transform interactionTransform;
+    public Rigidbody interactionRb;
     private bool _holdingObject;
 
     [SerializeField] private LayerMask playerLayerMask;
+
+    [Header("Spawn Item")] 
+    public UnityEvent<PlayerMovementAndControlSetup> triggerSpawnItem;
     
     [Header ("Pause")]
     public UnityEvent triggerPauseMenu;
@@ -52,15 +60,22 @@ public class PlayerMovementAndControlSetup : MonoBehaviour
         {
             _characterRb = GetComponent<Rigidbody>();
         }
-
         if (_playerTransform == null)
         {
             _playerTransform = GetComponent<Transform>();
         }
+
+        if (_playerRenderer == null)
+        {
+            _playerRenderer = GetComponent<Renderer>();
+        }
     }
     private void Start()
     {
+        var randomColour = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+        _playerRenderer.material.SetColor(Color1, randomColour);
         triggerPauseMenu.AddListener(PauseMenu.Instance.PauseGame);
+        triggerSpawnItem.AddListener(BlockSpawner.Instance.SpawnBlock);
     }
 
     private void OnDisable()
@@ -74,13 +89,13 @@ public class PlayerMovementAndControlSetup : MonoBehaviour
        if (_movementVector is { x: 0, z: 0 }) return;
        
        pickUpTransform.position = new Vector3(_playerTransform.position.x + _movementVector.x, _playerTransform.position.y,  _playerTransform.position.z + _movementVector.z );
-    
-       if (!Physics.Raycast(_interactionTransform.position,
-               (_playerTransform.position - _interactionTransform.position).normalized, out var hit, Mathf.Infinity,
+    if (!_holdingObject || !interactionTransform) return;
+       if (!Physics.Raycast(interactionTransform.position,
+               (_playerTransform.position - interactionTransform.position).normalized, out var hit, Mathf.Infinity,
                playerLayerMask)) return;
-       _interactionTransform.forward = hit.normal;
-       _interactionTransform.position = new Vector3(hit.point.x, hit.point.y + _interactionTransform.localScale.y * 0.5f, hit.point.z);
-       _interactionTransform.position += _interactionTransform.forward * (_interactionTransform.localScale.z);
+       interactionTransform.forward = hit.normal;
+       interactionTransform.position = new Vector3(hit.point.x, hit.point.y + interactionTransform.localScale.y * 0.5f, hit.point.z);
+       interactionTransform.position += interactionTransform.forward * (interactionTransform.localScale.z);
     }
     
     public void OnMove(InputAction.CallbackContext context)
@@ -92,24 +107,32 @@ public class PlayerMovementAndControlSetup : MonoBehaviour
     {
         CheckPickUp();
        
-        if (_interactionTransform == null || _holdingObject) return;
-        _interactionTransform.SetParent(pickUpTransform);
-        _interactionRb.constraints = RigidbodyConstraints.FreezePosition;
+        if (interactionTransform == null || _holdingObject) return;
+        interactionTransform.SetParent(pickUpTransform);
+        interactionRb.constraints = RigidbodyConstraints.FreezePosition;
         _holdingObject = true;
     }
 
     public void OnDrop(InputAction.CallbackContext context)
     {
-        if (_interactionTransform == null || _holdingObject == false) return;
-        _interactionRb.constraints = RigidbodyConstraints.None;
-        _interactionRb.constraints = RigidbodyConstraints.FreezePositionX|RigidbodyConstraints.FreezePositionZ;
-        _interactionTransform.parent = null;
+        if (interactionTransform == null || _holdingObject == false) return;
+        interactionRb.constraints = RigidbodyConstraints.None;
+        interactionRb.constraints = RigidbodyConstraints.FreezePositionX|RigidbodyConstraints.FreezePositionZ|RigidbodyConstraints.FreezeRotation;
+        interactionTransform.parent = null;
         _holdingObject = false;
-        _interactionTransform.gameObject.layer = 3;
-        _interactionTransform = null;
-        _interactionRb = null;
+        interactionTransform.gameObject.layer = 3;
+        interactionTransform = null;
+        interactionRb = null;
     }
 
+    public void OnCreate(InputAction.CallbackContext context)
+    {
+        CheckPickUp();
+        if (interactionTransform != null || _holdingObject) return;
+        triggerSpawnItem.Invoke(this);
+        _holdingObject = true;
+
+    }
     public void OnPause(InputAction.CallbackContext context)
     {
        triggerPauseMenu.Invoke();
@@ -152,9 +175,9 @@ public class PlayerMovementAndControlSetup : MonoBehaviour
     {
         var interactableArray = Physics.OverlapSphere(pickUpTransform.position, pickUpRadius, groundLayer);
         if (interactableArray.Length != 1 || _holdingObject) return;
-        _interactionTransform = interactableArray[0].transform;
-        _interactionRb = _interactionTransform.gameObject.GetComponent<Rigidbody>();
-        _interactionTransform.gameObject.layer = 6;
+        interactionTransform = interactableArray[0].transform;
+        interactionRb = interactionTransform.gameObject.GetComponent<Rigidbody>();
+        interactionTransform.gameObject.layer = 6;
         
        
     }

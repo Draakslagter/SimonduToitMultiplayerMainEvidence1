@@ -138,6 +138,15 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Create"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d5c114d-9fd7-43a5-87fe-cb858a1071d5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Dash"",
                     ""type"": ""Button"",
                     ""id"": ""ab0b6e49-bf9d-4fb9-9ad9-8e1a73e179f1"",
@@ -323,6 +332,28 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
                     ""action"": ""Drop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1938fa5c-d6d9-4dfb-93e4-48ed7bdab7e3"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Create"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""264810e8-afcf-45fb-b6bf-fef35fb1b4df"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Create"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -359,6 +390,7 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
         m_PlayerMap_Jump = m_PlayerMap.FindAction("Jump", throwIfNotFound: true);
         m_PlayerMap_PickUp = m_PlayerMap.FindAction("Pick Up", throwIfNotFound: true);
         m_PlayerMap_Drop = m_PlayerMap.FindAction("Drop", throwIfNotFound: true);
+        m_PlayerMap_Create = m_PlayerMap.FindAction("Create", throwIfNotFound: true);
         m_PlayerMap_Dash = m_PlayerMap.FindAction("Dash", throwIfNotFound: true);
     }
 
@@ -445,6 +477,7 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMap_Jump;
     private readonly InputAction m_PlayerMap_PickUp;
     private readonly InputAction m_PlayerMap_Drop;
+    private readonly InputAction m_PlayerMap_Create;
     private readonly InputAction m_PlayerMap_Dash;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerMap".
@@ -477,6 +510,10 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerMap/Drop".
         /// </summary>
         public InputAction @Drop => m_Wrapper.m_PlayerMap_Drop;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerMap/Create".
+        /// </summary>
+        public InputAction @Create => m_Wrapper.m_PlayerMap_Create;
         /// <summary>
         /// Provides access to the underlying input action "PlayerMap/Dash".
         /// </summary>
@@ -522,6 +559,9 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
             @Drop.started += instance.OnDrop;
             @Drop.performed += instance.OnDrop;
             @Drop.canceled += instance.OnDrop;
+            @Create.started += instance.OnCreate;
+            @Create.performed += instance.OnCreate;
+            @Create.canceled += instance.OnCreate;
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
@@ -551,6 +591,9 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
             @Drop.started -= instance.OnDrop;
             @Drop.performed -= instance.OnDrop;
             @Drop.canceled -= instance.OnDrop;
+            @Create.started -= instance.OnCreate;
+            @Create.performed -= instance.OnCreate;
+            @Create.canceled -= instance.OnCreate;
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
@@ -655,6 +698,13 @@ public partial class @CharacterInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDrop(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Create" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCreate(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Dash" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
