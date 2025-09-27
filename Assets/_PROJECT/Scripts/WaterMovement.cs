@@ -14,12 +14,11 @@ public class WaterMovement : MonoBehaviour
 
     private void Start()
     {
-        PlayerLobbyManager.Instance.triggerWaterMovement.AddListener(StartMovingWater);
+        PlayerLobbyManager.Instance.triggerGameStart.AddListener(StartMovingWater);
     }
 
     private void StartMovingWater(bool playerJoined)
     {
-        Debug.Log(playerJoined);
         _gameStart = playerJoined;
     }
 
@@ -29,11 +28,17 @@ public class WaterMovement : MonoBehaviour
         _waterRb.transform.Translate(Vector3.up * (_waterSpeedMultiplier * Time.fixedDeltaTime));
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.GetComponent<IDrownable>() == null) return;
+        var drownable = other.gameObject.GetComponent<IDrownable>();
+        drownable.Drown(true);
+    }
+
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            Destroy(other.gameObject);
-        }
+        if (other.gameObject.GetComponent<IDrownable>() == null) return;
+        var drownable = other.gameObject.GetComponent<IDrownable>();
+        drownable.Drown(false);
     }
 }

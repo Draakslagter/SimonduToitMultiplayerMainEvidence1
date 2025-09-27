@@ -25,8 +25,10 @@ public class MenuManager : MonoBehaviour
 
     private void ActivateMenu(CanvasGroup canvasGroup, bool isActive)
     {
+        if (canvasGroup == null) return;
         canvasGroup.alpha = isActive ? 1 : 0;
         canvasGroup.blocksRaycasts = isActive;
         canvasGroup.interactable = isActive;
+        canvasGroup.gameObject.SetActive(isActive);
     }
 }

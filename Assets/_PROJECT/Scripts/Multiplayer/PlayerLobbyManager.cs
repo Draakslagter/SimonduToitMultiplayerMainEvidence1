@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Cinemachine;
@@ -14,9 +15,9 @@ public class PlayerLobbyManager : MonoBehaviour
     [SerializeField] private List<PlayerInput> listOfJoinedPlayers = new List<PlayerInput>();
     [SerializeField] private GameObject playerNameTextPrefab;
 
-    [SerializeField] private VerticalLayoutGroup groupParent;
+    // [SerializeField] private VerticalLayoutGroup groupParent;
     
-    TMP_Text playerNameText;
+    // TMP_Text playerNameText;
 
     [SerializeField] private CinemachineTargetGroup cineMachineTargetGroup;
     
@@ -24,8 +25,11 @@ public class PlayerLobbyManager : MonoBehaviour
     [SerializeField] private CanvasGroup endGameCanvasGroup;
     
     
-    public UnityEvent<bool> triggerWaterMovement;
+    public UnityEvent<bool> triggerGameStart;
     public UnityEvent<CanvasGroup, bool> triggerMenuChange;
+    public UnityEvent triggerPlayerJoined;
+
+    private PlayerInputManager _playerInputManager;
     
     private void Awake()
     {
@@ -37,21 +41,24 @@ public class PlayerLobbyManager : MonoBehaviour
         {
             _instance = this;
         }
+        
+        if (_playerInputManager == null)
+        {
+            _playerInputManager = GetComponent<PlayerInputManager>();
+        }
     }
     public void AddPlayerToLobbyList(PlayerInput input)
     {
-        Debug.Log("New Player Has Joined");
         listOfJoinedPlayers.Add(input);
         cineMachineTargetGroup.AddMember(input.gameObject.transform, 1, 1);
-        var temporaryNameText = Instantiate(playerNameTextPrefab, groupParent.transform);
-        temporaryNameText.GetComponent<TextPlayerData>().ConnectPlayerToThisText(input);
-        temporaryNameText.GetComponent<TMP_Text>().text = GenerateNewPlayerName(input.GetComponent<PlayerData>().playerName);
+        // var temporaryNameText = Instantiate(playerNameTextPrefab, groupParent.transform);
+        // temporaryNameText.GetComponent<TextPlayerData>().ConnectPlayerToThisText(input);
+        // temporaryNameText.GetComponent<TMP_Text>().text = GenerateNewPlayerName(input.GetComponent<PlayerData>().playerName);
         CheckLobbySize();
     }
     
     public void RemovePlayerFromLobbyList(PlayerInput input)
     {
-        Debug.Log("Player has left the lobby");
         if (listOfJoinedPlayers.Contains(input))
         {
             listOfJoinedPlayers.Remove(input);
@@ -61,18 +68,30 @@ public class PlayerLobbyManager : MonoBehaviour
 
     private void CheckLobbySize()
     {
-        triggerWaterMovement.Invoke(listOfJoinedPlayers.Count > 0);
         if (listOfJoinedPlayers.Count <= 0)
         {
+            _playerInputManager.enabled = false;
             triggerMenuChange.Invoke(endGameCanvasGroup, true);
         }
         else
         {
+            if (listOfJoinedPlayers.Count <= 1)
+            {
+                triggerPlayerJoined.Invoke();
+                return;
+            }
             triggerMenuChange.Invoke(startGameCanvasGroup, false);
         }
+        StartCoroutine(CheckStartGame());
     }
-    private string GenerateNewPlayerName(string incomingName)
+
+    private IEnumerator CheckStartGame()
     {
-        return $"{incomingName} {listOfJoinedPlayers.Count}";
+        yield return new WaitForEndOfFrame();
+        triggerGameStart.Invoke(listOfJoinedPlayers.Count >= 2);
     }
+    // private string GenerateNewPlayerName(string incomingName)
+    // {
+    //     return $"{incomingName} {listOfJoinedPlayers.Count}";
+    // }
 }
